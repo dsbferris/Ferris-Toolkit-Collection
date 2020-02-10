@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Directory_Scanner_WPF_ModernUI.Pages.Settings.About"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel MinWidth="200">
+                <TextBlock Text="ABOUT" Style="{StaticResource Heading2}" />
+                <TextBlock Text="Big Thanks to FirstFloorSoftware for providing ModernUI for WPF!" TextWrapping="Wrap" Margin="0 10 0 0"/>
+                <mui:BBCodeBlock BBCode="[url=http://www.google.com]Check out their GitHub project page[/url]" />
+                <TextBlock Text="Also Big Thanks to Microsoft for providing Visual Studio for free, to all StackOverflow contributors, to all people out there, that help and post Code Snippest to Copy and learn from! An awesome community!!!" TextWrapping="Wrap" Margin="0 10 0 0"/>
+                <TextBlock TextWrapping="Wrap" Margin=" 0 30 0 0" Text="This is the third or fourth attemp at optimizing this Project. Firstly written in WinForms with poorly optimized Search Algorithm (only Directory.EnumerateFiles ran multiple times for all extensions) to a logical and optical remake in WinForms. Then some failed attempts in WPF, because it was pretty hard for me to learn XAML in comparison to WinForms. But finally, I pushed myself up onto learning it and here is the result! Enjoy it ;)"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
