@@ -16,13 +16,15 @@ namespace Directory_Scanner_WPF_ModernUI.DirectoryScanner
 		/// <param name="folders">Folders to scan for</param>
 		/// <param name="extensions">Extension to scan for. Null for no filter</param>
 		/// <returns></returns>
-		public static IEnumerable<ScanFile> Scan(IEnumerable<string> folders, IEnumerable<string> extensions)
+		public static List<ScanFile> Scan(List<string> folders, List<string> extensions)
 		{
 			List<ScanFile> files = new List<ScanFile>();
+			if (extensions.Contains("*")) extensions = null;
+
 			//Should start a scan for each given folder
-			foreach(var folder in folders)
+			foreach (var folder in folders)
 			{
-				files.AddRange(Task.Run(() => ScanFolder(folder, extensions)).Result);
+				files.AddRange(ScanFolder(folder, extensions));
 			}
 			return files;
 		}
@@ -33,7 +35,7 @@ namespace Directory_Scanner_WPF_ModernUI.DirectoryScanner
 		/// <param name="folder">Folder to Scan</param>
 		/// <param name="extensions">Extensions to match</param>
 		/// <returns></returns>
-		private static IEnumerable<ScanFile> ScanFolder(string folder, IEnumerable<string> extensions)
+		private static IEnumerable<ScanFile> ScanFolder(string folder, List<string> extensions)
 		{
 			Queue<string> folders = new Queue<string>();
 			folders.Enqueue(folder);
@@ -59,7 +61,7 @@ namespace Directory_Scanner_WPF_ModernUI.DirectoryScanner
 		/// <param name="file">File to check for</param>
 		/// <param name="extensions">Extensions to filter for. NULL if no filter to be applied.</param>
 		/// <returns>Returns a ScanFile or null if it didnt fit the extensions</returns>
-		private static ScanFile Filter(string file, IEnumerable<string> extensions)
+		private static ScanFile Filter(string file, List<string> extensions)
 		{
 			if (extensions == null) return CreateScanFile(file);
 			foreach(var ext in extensions)

@@ -18,9 +18,9 @@ namespace Directory_Scanner_WPF_ModernUI.Pages
 	/// <summary>
 	/// Interaction logic for BasicPage2.xaml
 	/// </summary>
-	public partial class BasicPage2 : UserControl
+	public partial class Home : UserControl
 	{
-		public BasicPage2()
+		public Home()
 		{
 			InitializeComponent();
 		}
