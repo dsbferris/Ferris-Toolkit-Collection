@@ -3,9 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <StackPanel>
+        <Expander Header="Filter Options" IsExpanded="True">
+            <StackPanel>
+                <mui:ModernToggleButton x:Name="TBFavourites" Content="Only Favourites" Checked="TBFavourites_Checked_Changed" Unchecked="TBFavourites_Checked_Changed"/>
+            </StackPanel>
+        </Expander>
         <ListView x:Name="LVFiles" ItemsSource="{Binding}" Height="300">
             
             <ListView.View>
