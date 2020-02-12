@@ -165,7 +165,7 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void BtnOpen_Click(object sender, RoutedEventArgs e)
+		private async void BtnOpen_Click(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog ofd = new OpenFileDialog()
 			{
@@ -174,7 +174,7 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			};
 			if (ofd.ShowDialog() == true)
 			{
-				DirectoryScan ds = XMLSerializerHelper.Deserialize(ofd.FileName);
+				DirectoryScan ds = await XMLSerializerHelper.DeserializeAsync(ofd.FileName);
 				
 				if (Application.Current.Properties.Contains("Scan")) Application.Current.Properties.Remove("Scan");
 				Application.Current.Properties.Add("Scan", ds);
@@ -188,9 +188,8 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void BtnStart_Click(object sender, RoutedEventArgs e)
+		private async void BtnStart_Click(object sender, RoutedEventArgs e)
 		{
-			
 			List<string> folders = GetFolders();
 			if (folders.Count < 1) return;
 			List<string> extensions = GetExtensions();
@@ -199,8 +198,9 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			{
 				Folders = folders,
 				Extensions = extensions,
-				Files = Scanner.Scan(folders, extensions)
+				Files = await Task.Run(() => Scanner.Scan(folders, extensions))
 			};
+
 
 			if (Application.Current.Properties.Contains("Scan")) Application.Current.Properties.Remove("Scan");
 			Application.Current.Properties.Add("Scan", ds);

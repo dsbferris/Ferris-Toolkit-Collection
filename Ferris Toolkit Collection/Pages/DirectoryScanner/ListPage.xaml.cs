@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Directory_Scanner_WPF_ModernUI.DirectoryScanner;
 using FirstFloor.ModernUI.Windows;
+using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Navigation;
 using Microsoft.Win32;
 
@@ -30,7 +31,7 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			}
 		}
 
-		private void BtnSave_Click(object sender, RoutedEventArgs e)
+		private async void BtnSave_Click(object sender, RoutedEventArgs e)
 		{
 			SaveFileDialog sfd = new SaveFileDialog
 			{
@@ -38,7 +39,8 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			};
 			if (sfd.ShowDialog() == true)
 			{
-				XMLSerializerHelper.Serialize(Scan, sfd.FileName);
+				await XMLSerializerHelper.SerializeAsync(Scan, sfd.FileName);
+				ModernDialog.ShowMessage("Saved Scan successfully", "Saved", MessageBoxButton.OK);
 			}
 		}
 

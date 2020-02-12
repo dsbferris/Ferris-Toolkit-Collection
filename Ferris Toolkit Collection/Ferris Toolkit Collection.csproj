@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="ModernUI.WPF" Version="1.0.9" />
+    <PackageReference Include="UwpDesktop" Version="10.0.14393.3" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
   </ItemGroup>
 
