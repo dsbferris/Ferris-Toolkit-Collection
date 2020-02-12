@@ -6,13 +6,66 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
+
+    <UserControl.Resources>
+
+        <Style TargetType="CheckBox" x:Key="IOSLike">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Grid >
+                                <Border Width="45" Height="20" Background="LightGray" CornerRadius="10" Margin="5,0"></Border>
+                                <Border x:Name="button" Height="25" Width="25" CornerRadius="12.5" HorizontalAlignment="Left"  ></Border>
+                            </Grid>
+                            <ContentPresenter x:Name="content" Margin="10,0,0,0" Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="right">
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4" From="0,0,0,0" To="28,0,0,0" >
+                                    <ThicknessAnimation.EasingFunction>
+                                        <CircleEase EasingMode="EaseOut"/>
+                                    </ThicknessAnimation.EasingFunction>
+                                </ThicknessAnimation>
+                            </Storyboard>
+                            <Storyboard x:Key="left">
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4" From="28,0,0,0" To="0,0,0,0" >
+                                    <ThicknessAnimation.EasingFunction>
+                                        <CircleEase EasingMode="EaseOut"/>
+                                    </ThicknessAnimation.EasingFunction>
+                                </ThicknessAnimation>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="false">
+                                <Trigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="leftt"></RemoveStoryboard>
+                                    <BeginStoryboard Storyboard="{StaticResource right}" x:Name="rightt" ></BeginStoryboard>
+                                </Trigger.ExitActions>
+                                <Setter TargetName="button" Property="Background" Value="#757575"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Trigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="rightt"></RemoveStoryboard>
+                                    <BeginStoryboard Storyboard="{StaticResource left}" x:Name="leftt" ></BeginStoryboard>
+                                </Trigger.ExitActions>
+                                <Setter TargetName="button" Property="Background" Value="#20BF55"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <StackPanel>
-        <Expander Header="Filter Options" IsExpanded="True">
+        <Expander Header="Filter Options" Margin="10 10" Foreground="LightGray" BorderThickness="1">
             <StackPanel>
-                <mui:ModernToggleButton x:Name="TBFavourites" Content="Only Favourites" Checked="TBFavourites_Checked_Changed" Unchecked="TBFavourites_Checked_Changed"/>
+                <CheckBox x:Name="TBFavourites" Style="{DynamicResource IOSLike}" Content="Only Favourites" Foreground="LightGray" Margin="0 10 0 0" Checked="TBFavourites_Checked_Changed" Unchecked="TBFavourites_Checked_Changed"/>
+                <TextBox x:Name="TbFilter" TextChanged="TbFilter_TextChanged" Margin="0 5 0 0" Width="200" Text="Filter by Name" HorizontalAlignment="Left" />
             </StackPanel>
         </Expander>
-        <ListView x:Name="LVFiles" ItemsSource="{Binding}" Height="300">
+        <ListView x:Name="LVFiles" ItemsSource="{Binding}" Height="300" Margin="0 10 0 0">
             
             <ListView.View>
                 <GridView>

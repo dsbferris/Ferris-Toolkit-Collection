@@ -68,13 +68,18 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 
 		private void TBFavourites_Checked_Changed(object sender, RoutedEventArgs e)
 		{
-			ModernToggleButton modernToggleButton = sender as ModernToggleButton;
-			if(modernToggleButton.IsChecked == true)
+			var toggle = sender as CheckBox;
+			if(toggle.IsChecked == true)
 			{
 				//TODO Filter for only favourites
 				
 			}
 			
+		}
+
+		private void TbFilter_TextChanged(object sender, TextChangedEventArgs e)
+		{
+
 		}
 	}
 }
