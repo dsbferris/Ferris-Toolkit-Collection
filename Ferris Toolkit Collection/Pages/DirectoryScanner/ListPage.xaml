@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="400">
 
     <UserControl.Resources>
-
+        <!-- http://lukaszadach.com/Projects/Post?id=7fcff520-03ca-47f9-b4b3-a669f5e8a6bd -->
         <Style TargetType="CheckBox" x:Key="IOSLike">
             <Setter Property="Template">
                 <Setter.Value>
