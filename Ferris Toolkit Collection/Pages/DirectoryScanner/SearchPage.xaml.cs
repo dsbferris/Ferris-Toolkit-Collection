@@ -9,60 +9,21 @@ using Directory_Scanner_WPF_ModernUI.DirectoryScanner;
 using Microsoft.Win32;
 using System.IO;
 using System.Threading.Tasks;
+using FirstFloor.ModernUI.Windows.Navigation;
 
 namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 {
 	/// <summary>
 	/// Interaction logic for BasicPage1.xaml
 	/// </summary>
-	public partial class SearchPage : UserControl, IContent
+	public partial class SearchPage : UserControl
 	{
-		private DirectoryScan scan;
 		public SearchPage()
 		{
 			InitializeComponent();
 		}
 
-		#region IContent NavigationEvents
-		public void OnFragmentNavigation(FirstFloor.ModernUI.Windows.Navigation.FragmentNavigationEventArgs e)
-		{
-		}
-
-		public void OnNavigatedFrom(FirstFloor.ModernUI.Windows.Navigation.NavigationEventArgs e)
-		{
-		}
-
-		public void OnNavigatedTo(FirstFloor.ModernUI.Windows.Navigation.NavigationEventArgs e)
-		{
-		}
-
-		public void OnNavigatingFrom(FirstFloor.ModernUI.Windows.Navigation.NavigatingCancelEventArgs e)
-		{
-			if(e.Source.OriginalString == "/Pages/DirectoryScanner/ListPage.xaml")
-			{
-				if (scan == null)
-					e.Cancel = true;
-			}
-		}
-		#endregion
-
-		private void BtnOpen_Click(object sender, RoutedEventArgs e)
-		{
-			OpenFileDialog ofd = new OpenFileDialog()
-			{
-				Multiselect = false,
-				Filter = "Directory Scan|*.ds|Encrypted Directory Scan|*.dsc"
-			};
-			if(ofd.ShowDialog() == true)
-			{
-				var scan = XMLSerializerHelper.Deserialize(ofd.FileName);
-				//TODO Change to ListTab
-				var list = new ListPage();
-				list.Scan = scan;
-				list.BeginInit();
-			}
-			
-		}
+		private void NavigateToListPage() => LinkCommands.NavigateLink.Execute("/Pages/DirectoryScanner/ListPage.xaml", NavigationHelper.FindFrame(NavigationHelper.FrameTop, Application.Current.MainWindow));
 
 		/// <summary>
 		/// Handles drop of folders into ListView
@@ -96,6 +57,17 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 				}
 			}
 			else if (LVFolders.SelectedItems.Count == 1) LVFolders.Items.Remove(LVFolders.SelectedItem);
+		}
+
+		/// <summary>
+		/// Clear TextBox when entering first time
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void TbExtensionAdd_GotFocus(object sender, RoutedEventArgs e)
+		{
+			var tb = sender as TextBox;
+			if (tb.Text == "Add your own here") tb.Clear();
 		}
 
 		/// <summary>
@@ -189,34 +161,52 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 
 
 		/// <summary>
-		/// Handles start of scanning
+		/// Opens File Dialog to open a Directory Scan File. Navigates then to ListPage
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void BtnOpen_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog ofd = new OpenFileDialog()
+			{
+				Multiselect = false,
+				Filter = "Directory Scan|*.ds|Encrypted Directory Scan|*.dsc"
+			};
+			if (ofd.ShowDialog() == true)
+			{
+				DirectoryScan ds = XMLSerializerHelper.Deserialize(ofd.FileName);
+				
+				if (Application.Current.Properties.Contains("Scan")) Application.Current.Properties.Remove("Scan");
+				Application.Current.Properties.Add("Scan", ds);
+				NavigateToListPage();
+			}
+
+		}
+
+		/// <summary>
+		/// Scanns and goes after that to ListPage
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void BtnStart_Click(object sender, RoutedEventArgs e)
 		{
+			
 			List<string> folders = GetFolders();
 			if (folders.Count < 1) return;
 			List<string> extensions = GetExtensions();
 			if (extensions.Count < 1) return;
+			DirectoryScan ds = new DirectoryScan()
+			{
+				Folders = folders,
+				Extensions = extensions,
+				Files = Scanner.Scan(folders, extensions)
+			};
 
-			ListPage lp = new ListPage();
-			lp.Scan = new DirectoryScan();
-			lp.Scan.Folders = folders;
-			lp.Scan.Extensions = extensions;
-			//App.Current.MainWindow = lp;
-			/*
-			System.Windows.IInputElement target = FirstFloor.ModernUI.Windows.Navigation.NavigationHelper.FindFrame("_top", System.Windows.Application.Current.MainWindow); 
-			System.Windows.Input.NavigationCommands.GoToPage.Execute("/Pages/DirectoryScanner/ListPage.xaml", target);
-			*/
+			if (Application.Current.Properties.Contains("Scan")) Application.Current.Properties.Remove("Scan");
+			Application.Current.Properties.Add("Scan", ds);
 
-			//TODO Navigate to ListPage
+			NavigateToListPage();
 		}
-
-		private void TbExtensionAdd_GotFocus(object sender, RoutedEventArgs e)
-		{
-			var tb = sender as TextBox;
-			if (tb.Text == "Add your own here") tb.Clear();
-		}
+		
 	}
 }

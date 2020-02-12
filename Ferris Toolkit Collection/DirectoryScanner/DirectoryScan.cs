@@ -38,6 +38,7 @@ namespace Directory_Scanner_WPF_ModernUI.DirectoryScanner
 		public string Name { get; set; }
 		public string Path { get; set; }
 		public long Size { get; set; }
+		public string SizeReadable { get; set; }
 		public bool Favourite { get; set; }
 	}
 }

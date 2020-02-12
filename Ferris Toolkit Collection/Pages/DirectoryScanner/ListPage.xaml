@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="450" d:DesignWidth="400">
     <StackPanel>
-        <ListView x:Name="LVFiles" ItemsSource="{Binding}">
+        <ListView x:Name="LVFiles" ItemsSource="{Binding}" Height="300">
+            
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Favourite">
@@ -17,7 +18,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}"/>
+                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding SizeReadable}"/>
                     <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path}"/>
                 </GridView>
             </ListView.View>
