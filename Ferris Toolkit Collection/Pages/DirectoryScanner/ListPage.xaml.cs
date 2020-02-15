@@ -1,4 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Directory_Scanner_WPF_ModernUI.DirectoryScanner;
@@ -16,11 +21,40 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 	{
 		public DirectoryScan Scan { get; set; }
 
-		public ListPage()
+		public Predicate<object> Filter { get; set; }
+
+		public ListPage()	
 		{
-			InitializeComponent();
+			InitializeComponent();		
 			
 		}
+		#region IContent Events
+		public void OnFragmentNavigation(FragmentNavigationEventArgs e)
+		{
+		}
+
+		public void OnNavigatedFrom(NavigationEventArgs e)
+		{
+		}
+
+		public void OnNavigatedTo(NavigationEventArgs e)
+		{
+			if (Application.Current.Properties.Contains("Scan"))
+			{
+				Scan = (DirectoryScan)Application.Current.Properties["Scan"];
+			}
+			if (Scan != null && Scan.Files != null)
+			{
+				LVFiles.ItemsSource = Scan.Files;
+				LVFiles.Items.Filter = Filter;
+			}
+
+		}
+
+		public void OnNavigatingFrom(NavigatingCancelEventArgs e)
+		{
+		}
+		#endregion
 
 		private void LVFiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
@@ -44,42 +78,52 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			}
 		}
 
-		public void OnFragmentNavigation(FragmentNavigationEventArgs e)
-		{
-		}
 
-		public void OnNavigatedFrom(NavigationEventArgs e)
+		private void FilterChanged()
 		{
-		}
-
-		public void OnNavigatedTo(NavigationEventArgs e)
-		{
-			if (Application.Current.Properties.Contains("Scan"))
+			if(TBFavourites.IsChecked == true)
 			{
-				Scan = (DirectoryScan)Application.Current.Properties["Scan"];
+				if (!string.IsNullOrWhiteSpace(TbFilter.Text))
+				{
+					Filter = new Predicate<object>(f =>
+					{
+					var file = (ScanFile)f;
+						return file.Favourite && file.Name.Contains(TbFilter.Text);
+					});
+				}
+				else
+				{
+					Filter = new Predicate<object>(f => ((ScanFile)f).Favourite);
+				}
 			}
-			if (Scan != null && Scan.Files != null)
-				LVFiles.ItemsSource = Scan.Files;
-		}
-
-		public void OnNavigatingFrom(NavigatingCancelEventArgs e)
-		{
+			else
+			{
+				if (!string.IsNullOrWhiteSpace(TbFilter.Text))
+				{
+					Filter = new Predicate<object>(f => ((ScanFile)f).Name.Contains(TbFilter.Text));
+				}
+				else
+				{
+					Filter = null;
+				}
+			}
+			try
+			{
+				LVFiles.Items.Filter = Filter;
+			}
+			catch (Exception)
+			{
+			}
 		}
 
 		private void TBFavourites_Checked_Changed(object sender, RoutedEventArgs e)
 		{
-			var toggle = sender as CheckBox;
-			if(toggle.IsChecked == true)
-			{
-				//TODO Filter for only favourites
-				
-			}
-			
+			FilterChanged();
 		}
 
 		private void TbFilter_TextChanged(object sender, TextChangedEventArgs e)
 		{
-
+			FilterChanged();
 		}
 	}
 }

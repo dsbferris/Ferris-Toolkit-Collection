@@ -92,7 +92,7 @@ namespace Directory_Scanner_WPF_ModernUI.DirectoryScanner
 			return sf;
 		}
 
-		private static string GetBytesReadable(long i)
+		public static string GetBytesReadable(long i)
 		{
 			// Get absolute value
 			long absolute_i = (i < 0 ? -i : i);
