@@ -25,10 +25,17 @@ namespace Directory_Scanner_WPF_ModernUI.DirectoryScanner
 		/// Sorts the Files list of a Directory Scan.
 		/// </summary>
 		/// <param name="sm">SortMode for sorting.</param>
-		public static void SortFiles(SortMode sm)
+		public void SortFiles(SortMode sm)
 		{
-			//TODO Implement SORT
-			throw new NotImplementedException();
+			switch (sm)
+			{
+				case SortMode.NAME: Files.Sort(delegate (ScanFile s1, ScanFile s2 { return s1.Name.CompareTo(s2.Name); }); break;
+				case SortMode.PATH: Files.Sort(delegate (ScanFile s1, ScanFile s2 { return s1.Path.CompareTo(s2.Path); }); break;
+				case SortMode.SIZE: Files.Sort(delegate (ScanFile s1, ScanFile s2 { return s1.Size.CompareTo(s2.Size); }); break;
+				case SortMode.NAME_DESC: Files.Sort(delegate (ScanFile s1, ScanFile s2 { return s2.Name.CompareTo(s1.Name); }); break;
+				case SortMode.PATH_DESC: Files.Sort(delegate (ScanFile s1, ScanFile s2 { return s2.Path.CompareTo(s1.Path); }); break;
+				case SortMode.SIZE_DESC: Files.Sort(delegate (ScanFile s1, ScanFile s2 { return s2.Size.CompareTo(s1.Size); }); break;
+			}
 		}
 	}
 
