@@ -88,7 +88,7 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 					Filter = new Predicate<object>(f =>
 					{
 					var file = (ScanFile)f;
-						return file.Favourite && file.Name.Contains(TbFilter.Text);
+						return file.Favourite && file.Name.ToLower().Contains(TbFilter.Text.ToLower());
 					});
 				}
 				else
@@ -100,7 +100,7 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			{
 				if (!string.IsNullOrWhiteSpace(TbFilter.Text))
 				{
-					Filter = new Predicate<object>(f => ((ScanFile)f).Name.Contains(TbFilter.Text));
+					Filter = new Predicate<object>(f => ((ScanFile)f).Name.ToLower().Contains(TbFilter.Text.ToLower()));
 				}
 				else
 				{
