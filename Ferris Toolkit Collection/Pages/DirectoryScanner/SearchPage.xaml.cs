@@ -23,6 +23,9 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			InitializeComponent();
 		}
 
+		static readonly string[] defaultFolders = new string[] { @"\\192.168.178.39\hd1\dbox1", @"\\192.168.178.39\hd2\dbox2", @"\\192.168.178.39\hd3\dbox3", @"\\192.168.178.39\hd4\dbox4", @"\\192.168.178.39\hd5\dbox5" };
+		static readonly string[] defaultExtensions = new string[] { "mp4", "ts", "mkv", "avi", "tx", "ty" };
+
 		private void NavigateToListPage() => LinkCommands.NavigateLink.Execute("/Pages/DirectoryScanner/ListPage.xaml", NavigationHelper.FindFrame(NavigationHelper.FrameTop, Application.Current.MainWindow));
 
 		/// <summary>
@@ -215,10 +218,50 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 			NavigateToListPage();
 		}
 
+		
         private void BtnLoadDefault_Click(object sender, RoutedEventArgs e)
         {
 			LVFolders.Items.Clear();
-			LVFolders.Items.Add()
+			foreach (var f in defaultFolders) LVFolders.Items.Add(f);
+			foreach (var item in TVExtensions.Items)
+			{
+				if (item is CheckBox cb)
+				{
+					foreach(var ext in defaultExtensions)
+                    {
+						if (cb.Content.ToString() == ext)
+						{
+							cb.IsChecked = true;
+							break;
+						}
+						else cb.IsChecked = false;
+                    }
+				}
+				else if (item is TreeViewItem tvi)
+				{
+					foreach (var subitem in tvi.Items)
+					{
+						if(subitem is CheckBox cbsub)
+                        {
+							foreach (var ext in defaultExtensions)
+							{
+								if (cbsub.Content.ToString() == ext)
+								{
+									cbsub.IsChecked = true;
+									break;
+								}
+								else cbsub.IsChecked = false;
+							}
+						}
+					}
+				}
+			}
+		
+		}
+
+		private void HandleCheckBox()
+        {
+
         }
-    }
+	}
 }

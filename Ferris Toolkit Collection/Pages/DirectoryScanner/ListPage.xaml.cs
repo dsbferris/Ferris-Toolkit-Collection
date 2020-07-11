@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -125,5 +126,28 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 		{
 			FilterChanged();
 		}
-	}
+
+
+        private void LVFiles_KeyUp(object sender, KeyEventArgs e)
+        {
+			if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+			{
+
+				if (e.Key == Key.C)
+				{
+					StringCollection files = new StringCollection();
+					foreach (var item in LVFiles.SelectedItems)
+					{
+						if (item is ScanFile sf)
+						{
+							files.Add(sf.Path);
+						}
+					}
+
+					Clipboard.SetFileDropList(files);
+
+				}
+			}
+		}
+    }
 }

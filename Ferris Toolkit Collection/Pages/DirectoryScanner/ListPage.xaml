@@ -8,6 +8,7 @@
              Name="ListPageName"
              d:DesignHeight="450" d:DesignWidth="400">
 
+    <!-- Style for IOS Like Checkbox Toggle -->
     <UserControl.Resources>
         <!-- http://lukaszadach.com/Projects/Post?id=7fcff520-03ca-47f9-b4b3-a669f5e8a6bd -->
         <Style TargetType="CheckBox" x:Key="IOSLike">
@@ -69,7 +70,7 @@
                 </StackPanel>
             </StackPanel>
         </Expander>
-        <ListView x:Name="LVFiles" ItemsSource="{Binding}" Height="300" Margin="0 10 0 0">
+        <ListView x:Name="LVFiles" ItemsSource="{Binding}" Height="300" Margin="0 10 0 0" KeyUp="LVFiles_KeyUp">
             
             <ListView.View>
                 <GridView>

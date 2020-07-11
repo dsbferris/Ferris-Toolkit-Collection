@@ -42,6 +42,8 @@
                             <CheckBox Content="avi"/>
                             <CheckBox Content="ts" />
                             <CheckBox Content="mkv"/>
+                            <CheckBox Content="tx"/>
+                            <CheckBox Content="ty"/>
                         </TreeViewItem>
                         <TreeViewItem Header="Audio">
                             <CheckBox Content="mp3"/>
