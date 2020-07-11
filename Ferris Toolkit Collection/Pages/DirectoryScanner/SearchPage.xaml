@@ -9,6 +9,7 @@
     <Grid Style="{StaticResource ContentRoot}">
         <StackPanel>
             <Button Content="Open Scan" x:Name="BtnOpen" Click="BtnOpen_Click"/>
+            <Button Content="Load defaults for home" x:Name="BtnLoadDefault" Click="BtnLoadDefault_Click"/>
             <Grid Margin="0 10 0 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

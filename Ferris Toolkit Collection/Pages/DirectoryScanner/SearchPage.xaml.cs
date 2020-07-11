@@ -49,14 +49,21 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 		/// <param name="e"></param>
 		private void LVFolders_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (LVFolders.SelectedItems.Count > 1)
+			if (e.Key == Key.Delete)
 			{
-				if (MessageBoxResult.Yes == MessageBox.Show("Are you sure to remove all folders from selection?", "Think about it", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes))
+				if (LVFolders.SelectedItems.Count > 1)
 				{
-					foreach (var item in LVFolders.SelectedItems) LVFolders.Items.Remove(item);
+
+					if (MessageBoxResult.Yes == MessageBox.Show("Are you sure to remove all folders from selection?", "Think about it", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes))
+					{
+						var removable = LVFolders.SelectedItems;
+
+						foreach (var item in removable) LVFolders.Items.Remove(item);
+					}
 				}
+				else if (LVFolders.SelectedItems.Count == 1) LVFolders.Items.Remove(LVFolders.SelectedItem);
 			}
-			else if (LVFolders.SelectedItems.Count == 1) LVFolders.Items.Remove(LVFolders.SelectedItem);
+			
 		}
 
 		/// <summary>
@@ -207,6 +214,11 @@ namespace Directory_Scanner_WPF_ModernUI.Pages.DirectoryScanner
 
 			NavigateToListPage();
 		}
-		
-	}
+
+        private void BtnLoadDefault_Click(object sender, RoutedEventArgs e)
+        {
+			LVFolders.Items.Clear();
+			LVFolders.Items.Add()
+        }
+    }
 }
